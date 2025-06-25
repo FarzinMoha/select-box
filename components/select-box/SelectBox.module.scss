@@ -1,0 +1,66 @@
+@use "@/styles/_mixins" as *;
+@use "@/styles/_variables" as *;
+
+.container{
+    width: 100%;
+    height: 45px;
+    position: relative;
+    .options{
+        margin-top: 5px;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: white;
+        border: 2px solid $border-color;
+        border-radius: $radius;
+        padding: 10px;
+        padding: 10px;
+        z-index: 1000;
+        visibility: hidden;
+        max-height: 0;
+        overflow: scroll;
+        opacity: 0;
+        &.open{
+            visibility: visible;
+            max-height: 300px;
+            opacity: 1;
+        }
+        .option{
+            padding: 15px 10px;
+            border-radius: $radius;
+            margin: 2px 0px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-transform: capitalize;
+            &:hover{
+                background-color: $primary-color-light;
+                color:black !important;
+            }
+            &.selected{
+                background-color: $primary-color-light;
+                color: $primary-color;
+            }
+            .check{
+                color: $primary-color;
+            }
+        }   
+    }
+    .rotate{
+        transform: rotate(180deg);
+    }
+    .clear{
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        transform: translateY(-50%);
+        z-index: 2;
+        padding: 0px !important;
+        color: red;
+        background-color: white;
+        border: none;
+        cursor: pointer;
+    }
+}

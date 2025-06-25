@@ -18,10 +18,15 @@
     }
     &:read-only{
       cursor: pointer;
+      user-select: none;
     }
     &:focus{
       outline: none;
       border-color: $primary-color;
+    }
+    &:disabled{
+      cursor: not-allowed;
+      background-color: $disabled-color;
     }
   }
   .rightIcon{
