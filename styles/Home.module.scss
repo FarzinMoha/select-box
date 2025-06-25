@@ -1,0 +1,8 @@
+@import "./_mixins.scss";
+@import "./_variables.scss";
+
+.page {
+  @include flex-center;
+  width: 100vw;
+  height: 100vh;
+}
