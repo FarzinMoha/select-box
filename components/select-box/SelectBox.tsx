@@ -8,6 +8,7 @@ import { FaCheck } from 'react-icons/fa';
 export default function SelectBox({options, name, placeholder,value, onChange, isMulti = false, isDisabled = false, isClearable = false}: SelectBoxProps) {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const values = isMulti ? (value as SelectOption[])?.map((option) => option.label).join(', ') ?? [] : (value as SelectOption)?.label || '';
 
   const toggleOptions = () => !isDisabled && setIsOpen(!isOpen)
@@ -40,10 +41,16 @@ export default function SelectBox({options, name, placeholder,value, onChange, i
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.scrollLeft = inputRef.current.scrollWidth;
+    }
+  }, [values]);
+
   return (
     <div ref={containerRef}  className={styles.container} >
         {isMulti && isClearable && !isDisabled && values.length > 0 && <IoIosCloseCircleOutline className={styles.clear} onClick={() => onChange({target: {name, value: null}})} size={25} /> }
-        <Input disabled={isDisabled} paddingLeft={isMulti && isClearable && !isDisabled && values.length > 0 ? '50px' : '10px'} onClick={toggleOptions} placeholder={placeholder} name={name} value={values} readOnly rightIcon={<IoIosArrowDown onClick={toggleOptions} className={isOpen ? styles.rotate : ''} size={20} />} />
+        <Input ref={inputRef} disabled={isDisabled} paddingLeft={isMulti && isClearable && !isDisabled && values.length > 0 ? '50px' : '10px'} onClick={toggleOptions} placeholder={placeholder} name={name} value={values} readOnly rightIcon={<IoIosArrowDown onClick={toggleOptions} className={isOpen ? styles.rotate : ''} size={20} />} />
         <div className={`${styles.options} ${isOpen ? styles.open : ''}`}>
           {options.map((option) => (
             <div onClick={() => onClickOptionHandler(option)} key={option.id} className={`${styles.option} ${values.includes(option.label) ? styles.selected : ''}`}>

@@ -1,35 +1,66 @@
-import { Geist, Geist_Mono } from "next/font/google";
 import styles from "@/styles/Home.module.scss";
 import SelectBox from "@/components/select-box/SelectBox";
 import { useState } from "react";
 import Input from "@/components/input/Input";
 import { SelectBoxChangeEvent } from "@/types";
 
-const geistSans = Geist({variable: "--font-geist-sans",subsets: ["latin"]});
-const geistMono = Geist_Mono({variable: "--font-geist-mono",subsets: ["latin"]});
-const options = [
-  {id: 1, label: 'option 1', value: 'option1'},
-  {id: 2, label: 'option 2', value: 'option2'},
-  {id: 3, label: 'option 3', value: 'option3'},
-  {id: 4, label: 'option 4', value: 'option4'},
-  {id: 5, label: 'option 5', value: 'option5'},
-  {id: 6, label: 'option 6', value: 'option6'},
-  {id: 7, label: 'option 7', value: 'option7'},
-  {id: 8, label: 'option 8', value: 'option8'},
-  {id: 9, label: 'option 9', value: 'option9'},
-  {id: 10, label: 'option 10', value: 'option10'},
+const defaultOptions = [
+  {
+    id: 1,
+    value: "education",
+    label: "Education 🎓",
+  },
+  {
+    id: 2,
+    value: "science",
+    label: "Yeeeah, science! 🧪",
+  },
+  {
+    id: 3,
+    value: "art",
+    label: "Art 🖼️🎭",
+  },
+  {
+    id: 4,
+    value: "sport",
+    label: "Sport ⚽",
+  },
+  {
+    id: 5,
+    value: "games",
+    label: "Games 🎮",
+  },
+  {
+    id: 6,
+    value: "health",
+    label: "Health 🏥",
+  },
 ]
 
 export default function Home() {
   const [state,setState] = useState({items: null,newOption: '',})
+  const [options,setOptions] = useState(defaultOptions);
+
   const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement> | SelectBoxChangeEvent) => {
     const { name, value } = e.target;
     setState((prev) => ({ ...prev, [name]: value }));
   };
+
+  const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const newId = options[options.length - 1].id + 1;
+    setOptions([...options, {id: newId, label: state.newOption, value: state.newOption}]);
+    setState({...state, newOption: ''});
+  };
+
   return (
-      <div className={`${styles.page} ${geistSans.variable} ${geistMono.variable}`}>
-        <Input disabled placeholder='Add new Option' name='newOption' value={state.newOption} onChange={onChangeHandler} />
-        <SelectBox isDisabled isClearable isMulti name='items' placeholder='Science' options={options} value={state.items} onChange={onChangeHandler} />
+      <div className={styles.page}>
+        <div className={styles.boxContainer}>
+        <form className={styles.form} onSubmit={onSubmitHandler}>
+          <Input placeholder='Add new Option and press enter' name='newOption' value={state.newOption} onChange={onChangeHandler} />
+        </form>
+        <SelectBox isClearable isMulti name='items' placeholder='Science' options={options} value={state.items} onChange={onChangeHandler} />
+        </div>
       </div>
   );
 }
